@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="myStyle.css">
+</head>
+
+
+    <!-- d3.selectAll('p').attr("class","info") -->
+    <script>
+
+d3.csv("https://raw.githubusercontent.com/chumo/Data2Serve/master/transition_clusters.csv", d3.autoType)
+  .then(function(mydata) {
+
+    var svg = d3.select('svg')
+      .attr('width', 800)
+      .attr('height', 600);
+
+    var circles = svg.selectAll("circle")
+      .data(mydata);
+
+    circles.join("circle")
+      .attr("cx", function(d) { return d.Xi; }) 
+      .attr("cy", function(d) { return d.Yi; }) 
+      .attr("fill", function(d) { return d.color; }) 
+      .attr("r", 8)
+      .transition().duration(1500)
+      .attr("cx", function(d) { return d.Xf; }) 
+      .attr("cy", function(d) { return d.Yf; });
+
+    svg.selectAll('circle')
+      .on("mouseover", doSomething);
+  });
+
+function doSomething(event) {
+    var old_r = d3.select(this).attr('r');
+    d3.select(this)
+    .transition().duration(2500)
+    .ease(d3.easeBounce)
+    .attr('r', parseInt(old_r) * 0.2)
+    .attr("cx",  function(d) { return d.Xi; }) 
+    .attr("cy",  function(d) { return d.Yi; })
+    .transition().duration(6000)
+    .attr("cx", function(d) { return d.Xf; }) 
+    .attr("cy", function(d) { return d.Yf; })
+    .attr('r', parseInt(old_r))
+
+}
+  </script>
+  
+
+
+
+
+
+<body>
+    <div>
+        <h1>This is just an example</h1>
+        <p>Here is a little table.</p>
+        <p id='pepe'>Sixteen numbers in a 4x4 arrangement.</p>
+        <p>There are also column names.</p>
+    </div>
+
+
+
+    <table>
+        <thead>
+            <tr>
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>13</td>
+                <td>14</td>
+                <td>15</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <svg width="500px" height="500px" style="background:whiteSmoke;"></svg>
+
+
+</body>
+
+</html>
